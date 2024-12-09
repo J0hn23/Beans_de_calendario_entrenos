@@ -1,19 +1,22 @@
-
 package net.ortegabravo.calendarioentrenosbeans;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.*;
 import javax.swing.border.Border;
 import net.miginfocom.swing.MigLayout;
+import net.ortegabravo.modelo.Usuari;
+import net.ortegabravo.modelo.Workout;
 
 public class CalendarioEntrenosBeans extends JPanel implements Serializable {
 
-
-   
+    private int mes;
+    private int anio;
     private Color colorBoton;
     private int diaActual;
     private int mesActual;
@@ -21,8 +24,8 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     private boolean isPresionado;
     private Point clickPresionado;
     private ArrastreListener arrastreListener;
+      JTextField txtIdEntrenador;
 
-    
     private static final String[] DIAS_SEMANA = {"L", "M", "X", "J", "V", "S", "D"};
     private static final String[] NOMBRES_MESES = {
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -45,6 +48,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         this.setBorder(border);
         this.setBackground(Color.DARK_GRAY);
         refrescarCalendario();
+
     }
 
     private void configurarEventosMouse() {
@@ -74,12 +78,73 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
 
     private void refrescarCalendario() {
         this.removeAll();
+        
+       
+        añadirBotonIDEntrenador();
+         añadirbotonCargarEntrenos();
         añadirEncabezado();
         añadirBotonesSemana();
         añadirEspaciosInicio();
         añadirDiasDelMes();
         this.revalidate();
         this.repaint();
+    }
+
+    
+    private void añadirBotonIDEntrenador(){
+        txtIdEntrenador= new  JTextField("aqui id entrenador");
+        this.add(txtIdEntrenador,"span 7, growx");
+        
+    }
+    
+    private void añadirbotonCargarEntrenos() {
+        JButton boton = new JButton("Cargar entrenos");
+        boton.setBackground(Color.CYAN);
+        this.add(boton, "span 7,growx, wrap");
+        
+       
+        
+
+        boton.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Acción al hacer clic en el botón
+                idEntrenador=Integer.parseInt(txtIdEntrenador.getText());
+                // Lista de entrenamientos por usuario
+                ArrayList<Workout> listaTotalEntrenos = new ArrayList<>();
+
+                // Obtener lista de usuarios por entrenador (id entrenador = 7)
+                ArrayList<Usuari> usuariosPorEntrenador = dameListaUsuariosPorEntrenador(idEntrenador);
+
+                if (usuariosPorEntrenador == null || usuariosPorEntrenador.isEmpty()) {
+                    System.out.println("No se encontraron usuarios para el entrenador especificado.");
+                    return;
+                }
+
+                // Recorrer cada usuario y obtener sus entrenamientos
+                for (Usuari usuario : usuariosPorEntrenador) {
+                    ArrayList<Workout> entrenosUsuario = DataAccess.getWorkoutsPerUser(usuario);
+
+                    if (entrenosUsuario != null && !entrenosUsuario.isEmpty()) {
+                        listaTotalEntrenos.addAll(entrenosUsuario);
+                        System.out.println("Añadiendo entrenamientos para el usuario: " + usuario.getId() + " - " + usuario.getNom());
+                    } else {
+                        System.out.println("No se encontraron entrenamientos para el usuario: " + usuario.getId() + " - " + usuario.getNom());
+                    }
+                }
+
+                // Verificar y mostrar entrenamientos almacenados en la lista total
+                if (listaTotalEntrenos.isEmpty()) {
+                    System.out.println("No se encontraron entrenamientos para ningún usuario.");
+                } else {
+                    for (Workout workout : listaTotalEntrenos) {
+                        System.out.println("Entrenamiento ID: " + workout.getId() + " - Fecha: " + workout.getForDate());
+                    }
+                }
+            }
+
+        });
+
     }
 
     private void añadirEncabezado() {
@@ -126,7 +191,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     private int diaInicioMes(int mes, int año) {
         Calendar calendar = new GregorianCalendar(año, mes - 1, 1);
         int diaSemana = calendar.get(Calendar.DAY_OF_WEEK);
-        return (diaSemana + 5) % 7; // Ajustar para que Lunes sea el primer día
+        return (diaSemana + 5) % 7;
     }
 
     private int obtenerDiasDelMes(int mes, int año) {
@@ -153,6 +218,26 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         refrescarCalendario();
     }
 
+    private ArrayList<Usuari> dameListaUsuariosPorEntrenador(int idEntrenador) {
+        ArrayList<Usuari> listaUsuarios = new ArrayList<>();
+        System.out.println("esta en dame lista");
+        return listaUsuarios = DataAccess.getAllUsersByInstructor(idEntrenador);
+    }
+
+    int idEntrenador;
+
+    public void extraerUsuariosPorEntrenador() {
+
+        ArrayList<Integer> numeroUsuarioPorEntrenador = new ArrayList<>();
+
+        for (Usuari u : dameListaUsuariosPorEntrenador(idEntrenador)) {
+
+            numeroUsuarioPorEntrenador.add(u.getId());//ya tengo un list con los id usuarios por entrenador
+
+        }
+
+    }
+
     public void setColorBoton(Color colorBoton) {
         this.colorBoton = colorBoton;
         refrescarCalendario();
@@ -162,6 +247,22 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         return colorBoton;
     }
 
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAnio() {
+        return anio;
+    }
+
+    public void setAño(int anio) {
+        this.anio = anio;
+    }
+
     public void addArrastreListener(ArrastreListener listener) {
         this.arrastreListener = listener;
     }
@@ -169,4 +270,5 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     public void removeArrastreListener() {
         this.arrastreListener = null;
     }
+
 }

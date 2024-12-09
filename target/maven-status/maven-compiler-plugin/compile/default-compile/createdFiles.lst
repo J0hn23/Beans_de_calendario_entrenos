@@ -1,5 +1,10 @@
+net/ortegabravo/modelo/Workout.class
 net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans.class
+net/ortegabravo/calendarioentrenosbeans/DataAccess.class
+net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans$1.class
+net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans$3.class
+net/ortegabravo/calendarioentrenosbeans/ArrastreListener.class
+net/ortegabravo/modelo/Exercici.class
 net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans$2.class
 net/ortegabravo/calendarioentrenosbeans/MiEventoClick.class
-net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans$1.class
-net/ortegabravo/calendarioentrenosbeans/ArrastreListener.class
+net/ortegabravo/modelo/Usuari.class

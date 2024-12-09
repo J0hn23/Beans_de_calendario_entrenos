@@ -26,12 +26,8 @@ public class Frame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        calendarioEntrenosBeans1 = new net.ortegabravo.calendarioentrenosbeans.CalendarioEntrenosBeans();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
-        getContentPane().add(calendarioEntrenosBeans1);
-        calendarioEntrenosBeans1.setBounds(10, 90, 556, 249);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -48,6 +44,5 @@ public class Frame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private net.ortegabravo.calendarioentrenosbeans.CalendarioEntrenosBeans calendarioEntrenosBeans1;
     // End of variables declaration//GEN-END:variables
 }

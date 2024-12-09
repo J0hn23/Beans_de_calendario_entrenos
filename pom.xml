@@ -11,10 +11,20 @@
         <exec.mainClass>net.ortegabravo.calendarioentrenosbeans.CalendarioEntrenosBeans</exec.mainClass>
     </properties>
     <dependencies>
-    <dependency>
-<groupId>com.miglayout</groupId>
-<artifactId>miglayout-swing</artifactId>
-<version>5.2</version>
-</dependency>
-</dependencies>
+        <dependency>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-swing</artifactId>
+            <version>5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>9.2.1.jre11</version>
+        </dependency>
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>0.10.2</version>
+        </dependency>
+    </dependencies>
 </project>
