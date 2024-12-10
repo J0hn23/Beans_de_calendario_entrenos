@@ -3,6 +3,7 @@ package net.ortegabravo.calendarioentrenosbeans;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,7 +25,9 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     private boolean isPresionado;
     private Point clickPresionado;
     private ArrastreListener arrastreListener;
-      JTextField txtIdEntrenador;
+    JTextField txtIdEntrenador;
+    ArrayList<Workout> listaTotalEntrenos = new ArrayList<>();
+    ArrayList<String> listaEntrenosTotalesString = new ArrayList<>();
 
     private static final String[] DIAS_SEMANA = {"L", "M", "X", "J", "V", "S", "D"};
     private static final String[] NOMBRES_MESES = {
@@ -89,6 +92,45 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         this.revalidate();
         this.repaint();
     }
+    
+    
+    
+    private ArrayList<String> cargaArrayEntrenosTotalesAString(){
+        //recorrer el list con los entrenos
+        
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Formato: día/mes/año
+        
+        
+        for(Workout w:listaTotalEntrenos){
+               
+           listaEntrenosTotalesString.add(dateAString(w.getForDate())); //Esto pasa el date del array a string para comparar luego
+        }
+        //comparar con el dia mes y año
+        //si coincide pinta el buton de verde
+        
+        System.out.println("lista de entrenos string cargada ahora recorro el list");
+        
+        
+        
+        
+    return listaEntrenosTotalesString;
+    }
+    
+    
+    private String dateAString(Date date) {
+        if (date == null) {
+            return null;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
+        return formatter.format(date);
+    }
+    
+     private void añadirEntrenoAlDia(int dia,int mes, int año){
+     
+       
+         
+     
+     }
 
     
     private void añadirBotonIDEntrenador(){
@@ -111,7 +153,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
                 // Acción al hacer clic en el botón
                 idEntrenador=Integer.parseInt(txtIdEntrenador.getText());
                 // Lista de entrenamientos por usuario
-                ArrayList<Workout> listaTotalEntrenos = new ArrayList<>();
+                
 
                 // Obtener lista de usuarios por entrenador (id entrenador = 7)
                 ArrayList<Usuari> usuariosPorEntrenador = dameListaUsuariosPorEntrenador(idEntrenador);
@@ -141,6 +183,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
                         System.out.println("Entrenamiento ID: " + workout.getId() + " - Fecha: " + workout.getForDate());
                     }
                 }
+            cargaArrayEntrenosTotalesAString();
             }
 
         });
@@ -176,6 +219,18 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
             final int diaSeleccionado = dia;
             JButton botonDia = new JButton(String.valueOf(dia));
             botonDia.setBackground(colorBoton != null ? colorBoton : Color.WHITE);
+            for(String s:listaEntrenosTotalesString){
+                    System.out.println(s);
+                    String fechaAComparar=String.valueOf(dia)+"/"+ String.valueOf(mesActual)+"/"+String.valueOf(añoActual);
+                    if(s.equals(fechaAComparar)){
+                        botonDia.setBackground(colorBoton != null ? colorBoton : Color.GREEN);
+                        
+                        
+                 }
+        }
+
+            
+            
 
             botonDia.addActionListener(new ActionListener() {
                 @Override

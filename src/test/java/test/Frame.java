@@ -39,7 +39,7 @@ public class Frame extends javax.swing.JFrame {
         
         Frame f=new Frame();
         f.setVisible(true);
-        f.setSize(500,600);
+        f.setSize(700,600);
         
     }
 
