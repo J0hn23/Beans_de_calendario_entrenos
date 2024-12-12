@@ -4,14 +4,13 @@
  */
 package net.ortegabravo.modelo;
 
-import java.util.Date;
-
 /**
  *
  * @author john
  */
 public class EntrenosFechasUsuarios {
     private int id;
+    
     
     private String fechaEntreno;
 

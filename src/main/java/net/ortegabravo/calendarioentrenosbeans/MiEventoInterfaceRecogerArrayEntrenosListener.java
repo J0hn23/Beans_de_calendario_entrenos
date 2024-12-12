@@ -5,7 +5,7 @@
 package net.ortegabravo.calendarioentrenosbeans;
 
 import java.util.ArrayList;
-import net.ortegabravo.modelo.EntrenosFechasUsuarios;
+
 
 /**
  *
@@ -13,6 +13,6 @@ import net.ortegabravo.modelo.EntrenosFechasUsuarios;
  */
 public interface MiEventoInterfaceRecogerArrayEntrenosListener {
     
-    void recogerArrayEntrenos(ArrayList<EntrenosFechasUsuarios> efu);
+    void recogerArrayEntrenos(ArrayList<String> efu);
     
 }

@@ -23,9 +23,11 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     private final int diaActual;
     private int mesActual;
     private int añoActual;
+    String diaActualconCeroDelante;
     private boolean isPresionado;
     private Point clickPresionado;
     private ArrastreListener arrastreListener;
+    String fechaFormateada;
    
     JTextField txtIdEntrenador;
     ArrayList<Workout> listaTotalEntrenos = new ArrayList<>();
@@ -222,7 +224,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
 
     private void añadirDiasDelMes() {
         int diasEnMes = obtenerDiasDelMes(mesActual, añoActual);
-        String diaActualconCeroDelante;
+        
         
 
         for (int dia = 1; dia <= diasEnMes; dia++) {
@@ -234,8 +236,8 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
              //mensaje debe cargar el numero de entrenos de ese dia metodo buscar entrenos por dia
              
              
-             String fechaFormateada=generarFecha(dia,mesActual, añoActual); 
-             
+            fechaFormateada=generarFecha(dia,mesActual, añoActual); 
+             System.out.println(fechaFormateada);
              
              mensaje=contadorEntrenosDia(arrayEntrenosUsuarios, fechaFormateada);
              botonDia.setToolTipText(String.valueOf(mensaje));
@@ -248,6 +250,8 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
 
 
                   String fechaAComparar=generarFecha(dia,mesActual, añoActual); 
+                  
+                 
 
                 System.out.println("Fecha en efu: " + efu.getFechaEntreno());
                 System.out.println("Fecha a comparar: " + fechaAComparar);
@@ -266,10 +270,11 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
                     // Cargar entrenos del día seleccionado
                     //cargaEntrenosdiaSeleccionado();
                     
-                    cargaEntrenosdiaSeleccionado();
+                    System.out.println(generarFecha(diaSeleccionado,mesActual,añoActual));
+                    
                     //dispararEventoEnviarArrayEntrenosFechasUsuarios(arrayEntrenosUsuarios);
                     
-                    dispararEventoEnviarArrayEntrenosFechasUsuarios(arrayEntrenosUsuarios);
+                    dispararEventoEnviarArrayEntrenosFechasUsuarios( cargaEntrenosdiaSeleccionado(generarFecha(diaSeleccionado,mesActual,añoActual)));
                   
                     
                     
@@ -284,6 +289,8 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
             this.add(botonDia); // Agregar el botón al contenedor
         }
     }
+    
+    
 
     
     public static String generarFecha(int dia, int mesActual, int añoActual) {
@@ -315,12 +322,13 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     }
     
     
-    private ArrayList<String> cargaEntrenosdiaSeleccionado() {
+    private ArrayList<String> cargaEntrenosdiaSeleccionado(String fecha) {
         
         ArrayList<String> fechasFiltradas = new ArrayList<>();
         for (EntrenosFechasUsuarios efu : arrayEntrenosUsuarios) {
-            if (efu.getFechaEntreno().equals(fechaAComparar)) {
+            if (efu.getFechaEntreno().equals(fecha)) {
                 fechasFiltradas.add(efu.getFechaEntreno());
+                System.out.println(fecha);
             }
         }
         return fechasFiltradas;
@@ -444,13 +452,18 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
 //         listener.recogerArrayEntrenos(evento);
 //    }
 //    
-    public void dispararEventoEnviarArrayEntrenosFechasUsuarios(ArrayList<EntrenosFechasUsuarios> efu) {
+//    public void dispararEventoEnviarArrayEntrenosFechasUsuarios(ArrayList<EntrenosFechasUsuarios> efu) {
+//        if (recogerEntrenos != null) { // Verifica si el listener está configurado
+//            //MiEventoDiaSeleccionado evento = new MiEventoDiaSeleccionado(this, efu);
+//            recogerEntrenos.recogerArrayEntrenos(efu); // Llama al método del listener
+//        }
+//    }  
+//    
+    
+     public void dispararEventoEnviarArrayEntrenosFechasUsuarios(ArrayList<String> efu) {
         if (recogerEntrenos != null) { // Verifica si el listener está configurado
             //MiEventoDiaSeleccionado evento = new MiEventoDiaSeleccionado(this, efu);
             recogerEntrenos.recogerArrayEntrenos(efu); // Llama al método del listener
         }
     }  
-    
-    
-    
 }

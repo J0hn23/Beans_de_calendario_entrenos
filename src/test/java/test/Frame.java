@@ -3,21 +3,18 @@ package test;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
-import net.ortegabravo.modelo.EntrenosFechasUsuarios;
 import net.ortegabravo.calendarioentrenosbeans.MiEventoInterfaceRecogerArrayEntrenosListener;
 
 public class Frame extends javax.swing.JFrame implements MiEventoInterfaceRecogerArrayEntrenosListener {
 
-    private javax.swing.JList<EntrenosFechasUsuarios> lstListaEjercicios1;
+    private javax.swing.JList<String> lstListaEjercicios1;
     private javax.swing.JScrollPane jScrollPane3 = new javax.swing.JScrollPane();
-    ArrayList<EntrenosFechasUsuarios> arrayLista = new ArrayList<>();
-    MiEventoInterfaceRecogerArrayEntrenosListener listener;
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public Frame() {
         initComponents();
         colocaLista();
-       //calendarioEntrenosBeans1.addRecogerArrayEntrenosListener(listener);
+       
         calendarioEntrenosBeans1.addRecogerArrayEntrenosListener(this);
 
     }
@@ -31,7 +28,7 @@ public class Frame extends javax.swing.JFrame implements MiEventoInterfaceRecoge
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
         getContentPane().add(calendarioEntrenosBeans1);
-        calendarioEntrenosBeans1.setBounds(100, 10, 556, 309);
+        calendarioEntrenosBeans1.setBounds(70, 20, 556, 309);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -54,22 +51,22 @@ public class Frame extends javax.swing.JFrame implements MiEventoInterfaceRecoge
 
     }
 
-    private void cargaListaConObjetos(ArrayList<EntrenosFechasUsuarios> a) {
+    private void cargaListaConObjetos(ArrayList<String> a) {
         
        
-        System.out.println("esta en cargarlistaobjetos");
-        DefaultListModel<EntrenosFechasUsuarios> dlm = new DefaultListModel();
+        System.out.println("esta en cargarlistaobjetos tiene de size="+ a.size());
+                
+         
+        DefaultListModel<String> dlm = new DefaultListModel();
+        
         if (a != null) {
-
             
-            
-            ArrayList<EntrenosFechasUsuarios> exercicis = new ArrayList<>();
-            //exercicis = DataAccess.getExercicisPerWorkout((entrenamiento));
-            //variableControlItemSeleccionadoEntreno = true;
+            if(!a.isEmpty()){
 
-            for (EntrenosFechasUsuarios e : a) {
-                dlm.addElement(e);
-            }
+                for (String e : a) {
+                    dlm.addElement(e);
+                }
+            }else {dlm.addElement("Sin entrenos");}
         }
         lstListaEjercicios1.setModel(dlm);
 
@@ -84,7 +81,7 @@ public class Frame extends javax.swing.JFrame implements MiEventoInterfaceRecoge
     
 
     @Override
-    public void recogerArrayEntrenos(ArrayList<EntrenosFechasUsuarios>  e) {
+    public void recogerArrayEntrenos(ArrayList<String>  e) {
         System.out.println("estoy en recogerArrayEntrenos el metodo de la interface");
           cargaListaConObjetos(e);
         

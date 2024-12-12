@@ -8,18 +8,20 @@ import net.ortegabravo.modelo.EntrenosFechasUsuarios;
 
 public class MiEventoDiaSeleccionado extends EventObject{
 
-    private final ArrayList<EntrenosFechasUsuarios> efu;
+    private final ArrayList<String> efu;
     
 
 
-    public MiEventoDiaSeleccionado(Object source, ArrayList<EntrenosFechasUsuarios>efu) {
+    public MiEventoDiaSeleccionado(Object source, ArrayList<String>efu) {
         super(source);
         this.efu=efu;
     }
 
-    public ArrayList<EntrenosFechasUsuarios> getEfu() {
+    public ArrayList<String> getEfu() {
         return efu;
     }
+
+    
 
     @Override
     public Object getSource() {
