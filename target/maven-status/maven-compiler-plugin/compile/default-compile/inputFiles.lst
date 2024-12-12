@@ -2,6 +2,8 @@
 /home/john/NetBeansProjects/calendarioEntrenosBeans/src/main/java/net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans.java
 /home/john/NetBeansProjects/calendarioEntrenosBeans/src/main/java/net/ortegabravo/calendarioentrenosbeans/DataAccess.java
 /home/john/NetBeansProjects/calendarioEntrenosBeans/src/main/java/net/ortegabravo/calendarioentrenosbeans/MiEventoClick.java
+/home/john/NetBeansProjects/calendarioEntrenosBeans/src/main/java/net/ortegabravo/calendarioentrenosbeans/MiEventoDiaSeleccionado.java
+/home/john/NetBeansProjects/calendarioEntrenosBeans/src/main/java/net/ortegabravo/calendarioentrenosbeans/MiEventoInterfaceRecogerArrayEntrenosListener.java
 /home/john/NetBeansProjects/calendarioEntrenosBeans/src/main/java/net/ortegabravo/modelo/EntrenosFechasUsuarios.java
 /home/john/NetBeansProjects/calendarioEntrenosBeans/src/main/java/net/ortegabravo/modelo/Exercici.java
 /home/john/NetBeansProjects/calendarioEntrenosBeans/src/main/java/net/ortegabravo/modelo/Usuari.java
