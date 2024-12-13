@@ -19,25 +19,25 @@ public class Frame extends javax.swing.JFrame implements MiEventoInterfaceRecoge
         initComponents();
         colocaLista();
        
-        calendarioEntrenosBeans2.addRecogerArrayEntrenosListener(this);
+        calendarioEntrenosBeans1.addRecogerArrayEntrenosListener(this);
 
     }
 
     public Frame(JList<String> lstListaEjercicios1, CalendarioEntrenosBeans calendarioEntrenosBeans1) throws HeadlessException {
         this.lstListaEjercicios1 = lstListaEjercicios1;
-        this.calendarioEntrenosBeans2 = calendarioEntrenosBeans1;
+        this.calendarioEntrenosBeans1 = calendarioEntrenosBeans1;
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        calendarioEntrenosBeans2 = new net.ortegabravo.calendarioentrenosbeans.CalendarioEntrenosBeans();
+        calendarioEntrenosBeans1 = new net.ortegabravo.calendarioentrenosbeans.CalendarioEntrenosBeans();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
-        getContentPane().add(calendarioEntrenosBeans2);
-        calendarioEntrenosBeans2.setBounds(80, 20, 556, 309);
+        getContentPane().add(calendarioEntrenosBeans1);
+        calendarioEntrenosBeans1.setBounds(110, 10, 556, 309);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -56,7 +56,7 @@ public class Frame extends javax.swing.JFrame implements MiEventoInterfaceRecoge
         jScrollPane3.setViewportView(lstListaEjercicios1);
 
         getContentPane().add(jScrollPane3);
-        jScrollPane3.setBounds(240, 360, 330, 130);
+        jScrollPane3.setBounds(220, 360, 390, 130);
 
     }
 
@@ -80,7 +80,7 @@ public class Frame extends javax.swing.JFrame implements MiEventoInterfaceRecoge
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private net.ortegabravo.calendarioentrenosbeans.CalendarioEntrenosBeans calendarioEntrenosBeans2;
+    private net.ortegabravo.calendarioentrenosbeans.CalendarioEntrenosBeans calendarioEntrenosBeans1;
     // End of variables declaration//GEN-END:variables
 
    
