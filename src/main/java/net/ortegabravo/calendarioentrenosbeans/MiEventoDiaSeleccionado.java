@@ -3,7 +3,6 @@ package net.ortegabravo.calendarioentrenosbeans;
 
 import java.util.ArrayList;
 import java.util.EventObject;
-import net.ortegabravo.modelo.EntrenosFechasUsuarios;
 
 
 public class MiEventoDiaSeleccionado extends EventObject{

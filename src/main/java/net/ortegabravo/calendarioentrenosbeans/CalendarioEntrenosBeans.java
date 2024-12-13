@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 import javax.swing.*;
 import javax.swing.border.Border;
 import net.miginfocom.swing.MigLayout;
-import net.ortegabravo.modelo.EntrenosFechasUsuarios;
+
 import net.ortegabravo.modelo.Usuari;
 import net.ortegabravo.modelo.Workout;
 
@@ -20,34 +20,31 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     private int mes;
     private int anio;
     private Color colorBoton = Color.GREEN;
-    private final int diaActual;
     private int mesActual;
     private int añoActual;
-    String diaActualconCeroDelante;
     private boolean isPresionado;
     private Point clickPresionado;
     private ArrastreListener arrastreListener;
-    String fechaFormateada;
-   
+    private String fechaFormateada;
+    private int mensaje = 0;
+    private final Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+
     JTextField txtIdEntrenador;
     ArrayList<Workout> listaTotalEntrenos = new ArrayList<>();
     ArrayList<String> listaEntrenosTotalesString = new ArrayList<>();
-    private ArrayList<EntrenosFechasUsuarios> arrayEntrenosUsuarios = new ArrayList<>();
-    EntrenosFechasUsuarios efu = new EntrenosFechasUsuarios();
-
+    
     private static final String[] DIAS_SEMANA = {"L", "M", "X", "J", "V", "S", "D"};
     private static final String[] NOMBRES_MESES = {
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     };
-    private final Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
-    String fechaAComparar = null;
-    private ArrayList<EntrenosFechasUsuarios> fechasFiltradas;
-    int mensaje = 0;
+   
+   
+    
 
     public CalendarioEntrenosBeans() {
         Calendar calendar = Calendar.getInstance();
-        diaActual = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.get(Calendar.DAY_OF_MONTH);
         mesActual = calendar.get(Calendar.MONTH) + 1;
         añoActual = calendar.get(Calendar.YEAR);
 
@@ -118,18 +115,27 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         return listaEntrenosTotalesString;
     }
 
-    private String dateAString(Date date) {
-        if (date == null) {
+    private String dateAString(Date d) {
+        if (d == null) {
             return null;
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        return formatter.format(date);
+        return formatter.format(d);
     }
 
     private void añadirBotonIDEntrenador() {
         txtIdEntrenador = new JTextField("aqui id entrenador");
         this.add(txtIdEntrenador, "span 7, growx");
-
+        
+    
+       txtIdEntrenador.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdEntrenadorKeyTyped(evt);
+             }
+        });
+       
+       
     }
 
     private void añadirbotonCargarEntrenos() {
@@ -169,24 +175,25 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
                 // Verificar y mostrar entrenamientos almacenados en la lista total
                 if (listaTotalEntrenos.isEmpty()) {
                     System.out.println("No se encontraron entrenamientos para ningún usuario.");
-                } else {
-                    for (Workout w : listaTotalEntrenos) {
-
-                        System.out.println("Entrenamiento ID: " + w.getId() + " - Fecha: " + w.getForDate());
-                        EntrenosFechasUsuarios efu = new EntrenosFechasUsuarios();
-                        efu.setId(w.getId());
-                        efu.setFechaEntreno(dateAString(w.getForDate()));
-                        arrayEntrenosUsuarios.add(efu);
-                        System.out.println("este es efu:" + efu.getId() + " " + efu.getFechaEntreno());
-
-                    }// aqui ya tengo arrayEntrenos Usuarios cargado con dos string fecha e id
                 }
+//                else {
+//                    for (Workout w : listaTotalEntrenos) {
+//
+//                        System.out.println("Entrenamiento ID: " + w.getId() + " - Fecha: " + w.getForDate());
+//                        EntrenosFechasUsuarios efu = new EntrenosFechasUsuarios();
+//                       efu.setId(w.getId());
+//                        efu.setFechaEntreno(dateAString(w.getForDate()));
+//                        efu.setIdUsuario(w.getIdUsuari());
+//                        efu.setComentarios(w.getComments());
+//                        arrayEntrenosUsuarios.add(efu);
+//                        System.out.println("este es efu:" + efu.getId() + " " + efu.getFechaEntreno()+" "+efu.getComentarios());
 
+//                    }// aqui ya tengo arrayEntrenos Usuarios cargado con dos string fecha e id
                 System.out.println("estoy dentro de arrayEntrenosUsuarios");
-                System.out.println("tamaño" + arrayEntrenosUsuarios.size());
-                for (EntrenosFechasUsuarios ef : arrayEntrenosUsuarios) {
+                System.out.println("tamaño" + listaTotalEntrenos.size());
+                for (Workout ef : listaTotalEntrenos) {
 
-                    System.out.println(ef.getFechaEntreno() + "  " + ef.getId());
+                    System.out.println(ef.getComments() + "  " + ef.getForDate() + " " + ef.getIdUsuari());
 
                 }
                 //cargarArrayEntrenosUsuarios(arrayEntrenosUsuarios);
@@ -196,8 +203,6 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         });
 
     }
-
-    
 
     private void añadirEncabezado() {
         JLabel encabezado = new JLabel(NOMBRES_MESES[mesActual - 1] + " " + añoActual, SwingConstants.CENTER);
@@ -224,39 +229,28 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
 
     private void añadirDiasDelMes() {
         int diasEnMes = obtenerDiasDelMes(mesActual, añoActual);
-        
-        
 
         for (int dia = 1; dia <= diasEnMes; dia++) {
             final int diaSeleccionado = dia;
             JButton botonDia = new JButton(String.valueOf(dia));
             botonDia.setBackground(Color.WHITE);
-             
-             
-             //mensaje debe cargar el numero de entrenos de ese dia metodo buscar entrenos por dia
-             
-             
-            fechaFormateada=generarFecha(dia,mesActual, añoActual); 
-             System.out.println(fechaFormateada);
-             
-             mensaje=contadorEntrenosDia(arrayEntrenosUsuarios, fechaFormateada);
-             botonDia.setToolTipText(String.valueOf(mensaje));
-                  
 
+            //mensaje debe cargar el numero de entrenos de ese dia metodo buscar entrenos por dia
+            fechaFormateada = generarFecha(dia, mesActual, añoActual);
+            System.out.println(fechaFormateada);
 
-                
-            for (EntrenosFechasUsuarios efu : arrayEntrenosUsuarios) {
-                System.out.println(efu.getFechaEntreno() + " id: " + efu.getId() + " y dia vale: " + dia);
+            mensaje = contadorEntrenosDia(listaTotalEntrenos, fechaFormateada);
+            botonDia.setToolTipText(String.valueOf(mensaje));
 
+            for (Workout w : listaTotalEntrenos) {
+                System.out.println(w.getComments() + " id: " + w.getId() + " y dia vale: " + dia);
 
-                  String fechaAComparar=generarFecha(dia,mesActual, añoActual); 
-                  
-                 
+                String fechaAComparar = generarFecha(dia, mesActual, añoActual);
 
-                System.out.println("Fecha en efu: " + efu.getFechaEntreno());
+                System.out.println("Fecha en efu: " + w.getForDate());
                 System.out.println("Fecha a comparar: " + fechaAComparar);
 
-                if (efu.getFechaEntreno().equals(fechaAComparar)) {
+                if (dateAString(w.getForDate()).equals(fechaAComparar)) {
                     botonDia.setBackground(colorBoton);
                     botonDia.repaint();
                 }
@@ -267,22 +261,15 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Día seleccionado: " + diaSeleccionado);
 
-                    // Cargar entrenos del día seleccionado
-                    //cargaEntrenosdiaSeleccionado();
-                    
-                    System.out.println(generarFecha(diaSeleccionado,mesActual,añoActual));
-                    
-                    //dispararEventoEnviarArrayEntrenosFechasUsuarios(arrayEntrenosUsuarios);
-                    
-                    dispararEventoEnviarArrayEntrenosFechasUsuarios( cargaEntrenosdiaSeleccionado(generarFecha(diaSeleccionado,mesActual,añoActual)));
+                    // Carga entrenos del día seleccionado
                   
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                    System.out.println(generarFecha(diaSeleccionado, mesActual, añoActual));
+
+                  
+                    MiEventoDiaSeleccionado evento = new MiEventoDiaSeleccionado(this, cargaEntrenosdiaSeleccionado(generarFecha(diaSeleccionado, mesActual, añoActual)));
+
+                    dispararEventoEnviarArrayEntrenosFechasUsuarios(evento);
+
                 }
             });
 
@@ -290,9 +277,31 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         }
     }
     
+    private void txtIdEntrenadorKeyTyped(java.awt.event.KeyEvent evt) {                                             
+        //limito la entrada por teclado a estos caracteres
+        char c = evt.getKeyChar();
+        if ((c < '0' || c > '9')) {
+            evt.consume();
+        }
+    }
     
+   
+    private ArrayList<String> cargaEntrenosdiaSeleccionado(String fecha) {
 
-    
+        ArrayList<String> fechasFiltradas = new ArrayList<>();
+
+        for (Workout w : listaTotalEntrenos) {
+
+            if (dateAString(w.getForDate()).equals(fecha)) {
+                String cadenaEntrenoDia = "Entreno:"+w.getComments() + "/ Usuario:" + String.valueOf(w.getIdUsuari()+"/Fecha:"+w.getForDate());
+
+                fechasFiltradas.add(cadenaEntrenoDia);
+                System.out.println(fecha);
+            }
+        }
+        return fechasFiltradas;
+    }
+
     public static String generarFecha(int dia, int mesActual, int añoActual) {
         String diaActualconCeroDelante;
 
@@ -300,40 +309,25 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
             diaActualconCeroDelante = "0" + dia;
         } else {
             diaActualconCeroDelante = String.valueOf(dia);
-        }        
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String fechaAComparar = diaActualconCeroDelante + "/" + mesActual + "/" + añoActual;
 
         return fechaAComparar;
     }
-    
-    
-    public static int contadorEntrenosDia(ArrayList<EntrenosFechasUsuarios> arrayEntrenosUsuarios, String fecha) {
+
+    private int contadorEntrenosDia(ArrayList<Workout> listaEntrenosUsuarios, String fecha) {
         int coincidencias = 0;
-       
-        for (EntrenosFechasUsuarios s : arrayEntrenosUsuarios) {
-            
-            if (s.getFechaEntreno().equals(fecha)) {
+
+        for (Workout w : listaEntrenosUsuarios) {
+
+            if (dateAString(w.getForDate()).equals(fecha)) {
                 coincidencias++;
             }
         }
 
         return coincidencias;
     }
-    
-    
-    private ArrayList<String> cargaEntrenosdiaSeleccionado(String fecha) {
-        
-        ArrayList<String> fechasFiltradas = new ArrayList<>();
-        for (EntrenosFechasUsuarios efu : arrayEntrenosUsuarios) {
-            if (efu.getFechaEntreno().equals(fecha)) {
-                fechasFiltradas.add(efu.getFechaEntreno());
-                System.out.println(fecha);
-            }
-        }
-        return fechasFiltradas;
-    }
-
 
     private int diaInicioMes(int mes, int año) {
         Calendar calendar = new GregorianCalendar(año, mes - 1, 1);
@@ -366,8 +360,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     }
 
     private ArrayList<Usuari> dameListaUsuariosPorEntrenador(int idEntrenador) {
-        ArrayList<Usuari> listaUsuarios = new ArrayList<>();
-        System.out.println("esta en dame lista");
+        ArrayList<Usuari> listaUsuarios = new ArrayList<>();     
         return listaUsuarios = DataAccess.getAllUsersByInstructor(idEntrenador);
     }
 
@@ -410,23 +403,6 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         this.anio = anio;
     }
 
-    public ArrayList<EntrenosFechasUsuarios> getArrayEntrenosUsuarios() {
-        return arrayEntrenosUsuarios;
-    }
-
-    public void setArrayEntrenosUsuarios(ArrayList<EntrenosFechasUsuarios> arrayEntrenosUsuarios) {
-        this.arrayEntrenosUsuarios = arrayEntrenosUsuarios;
-    }
-
-    public ArrayList<EntrenosFechasUsuarios> getFechasFiltradas() {
-        return fechasFiltradas;
-    }
-
-    public void setFechasFiltradas(ArrayList<EntrenosFechasUsuarios> fechasFiltradas) {
-        this.fechasFiltradas = fechasFiltradas;
-    }
-
-    
     public void addArrastreListener(ArrastreListener listener) {
         this.arrastreListener = listener;
     }
@@ -436,34 +412,20 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     }
 
     MiEventoInterfaceRecogerArrayEntrenosListener recogerEntrenos;
-    
-    
-     public void addRecogerArrayEntrenosListener(MiEventoInterfaceRecogerArrayEntrenosListener listener) {
-        this.recogerEntrenos= listener;
+
+    public void addRecogerArrayEntrenosListener(MiEventoInterfaceRecogerArrayEntrenosListener listener) {
+        this.recogerEntrenos = listener;
     }
 
     public void removeRecogerArrayEntrenosListener() {
-        this.recogerEntrenos= null;
+        this.recogerEntrenos = null;
     }
-    
-    
-//    private void dispararEventoEnviarArrayEntrenosFechasUsuarios(ArrayList<EntrenosFechasUsuarios>efu) {
-//        MiEventoDiaSeleccionado evento = new MiEventoDiaSeleccionado(this,efu);
-//         listener.recogerArrayEntrenos(evento);
-//    }
-//    
-//    public void dispararEventoEnviarArrayEntrenosFechasUsuarios(ArrayList<EntrenosFechasUsuarios> efu) {
-//        if (recogerEntrenos != null) { // Verifica si el listener está configurado
-//            //MiEventoDiaSeleccionado evento = new MiEventoDiaSeleccionado(this, efu);
-//            recogerEntrenos.recogerArrayEntrenos(efu); // Llama al método del listener
-//        }
-//    }  
-//    
-    
-     public void dispararEventoEnviarArrayEntrenosFechasUsuarios(ArrayList<String> efu) {
+
+
+    public void dispararEventoEnviarArrayEntrenosFechasUsuarios(MiEventoDiaSeleccionado e) {
         if (recogerEntrenos != null) { // Verifica si el listener está configurado
-            //MiEventoDiaSeleccionado evento = new MiEventoDiaSeleccionado(this, efu);
-            recogerEntrenos.recogerArrayEntrenos(efu); // Llama al método del listener
+
+            recogerEntrenos.recogerArrayEntrenos(e); // Llama al método del listener
         }
-    }  
+    }
 }

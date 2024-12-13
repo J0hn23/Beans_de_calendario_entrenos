@@ -5,9 +5,9 @@ net/ortegabravo/modelo/Exercici.class
 net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans$2.class
 net/ortegabravo/calendarioentrenosbeans/MiEventoClick.class
 net/ortegabravo/calendarioentrenosbeans/DataAccess.class
-net/ortegabravo/modelo/EntrenosFechasUsuarios.class
 net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans$1.class
 net/ortegabravo/calendarioentrenosbeans/ArrastreListener.class
 net/ortegabravo/calendarioentrenosbeans/MiEventoInterfaceRecogerArrayEntrenosListener.class
+net/ortegabravo/calendarioentrenosbeans/CalendarioEntrenosBeans$4.class
 net/ortegabravo/modelo/Usuari.class
 net/ortegabravo/calendarioentrenosbeans/MiEventoDiaSeleccionado.class
