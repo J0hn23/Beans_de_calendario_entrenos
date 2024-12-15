@@ -37,7 +37,7 @@ public class Frame extends javax.swing.JFrame implements MiEventoInterfaceRecoge
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
         getContentPane().add(calendarioEntrenosBeans1);
-        calendarioEntrenosBeans1.setBounds(110, 10, 556, 309);
+        calendarioEntrenosBeans1.setBounds(110, 20, 556, 309);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

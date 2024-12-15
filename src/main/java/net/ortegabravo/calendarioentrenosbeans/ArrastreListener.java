@@ -1,13 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
+
 package net.ortegabravo.calendarioentrenosbeans;
 
-/**
- *
- * @author john
- */
+//esta es la Interface que obliga a los source que se añadan a implemtar los metodos de ella. He hecho dos uno cuando sea el click hacia
+//arriba y otro hacia abajo
 public interface ArrastreListener {
     
     public void arrastreArriba();

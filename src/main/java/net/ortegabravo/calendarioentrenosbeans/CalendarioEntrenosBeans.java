@@ -39,6 +39,9 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     };
 
+    
+    //Este es el contructor de la clase la cargo con un calendar para iniciar la fecha en el Date del sistema 
+    //es decir ahora y cargo un metodo init y añado la clase como listener de los eventos del mouse
     public CalendarioEntrenosBeans() {
         Calendar calendar = Calendar.getInstance();
         calendar.get(Calendar.DAY_OF_MONTH);
@@ -57,6 +60,8 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
 
     }
 
+    //clase para añadir a esta clase como escuchador del los click, con la clase Point guardo cuando presiono y cuando suelto, si hay 
+    //movimiento pues genera el evento
     private void configurarEventosMouse() {
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -82,6 +87,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         });
     }
 
+    //Aqui cargo el calendario
     private void refrescarCalendario() {
         this.removeAll();
         añadirBotonIDEntrenador();
@@ -94,6 +100,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         this.repaint();
     }
 
+    //Aqui cargo un arrayList con las fechas de entrenos y para luego compararlas luego y pintar de verde el boton si coinciden
     private ArrayList<String> cargaArrayEntrenosTotalesAString() {
         //recorrer el list con los entrenos y devuelve listaentrenostotales String con los entrenos
 
@@ -110,6 +117,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         return listaEntrenosTotalesString;
     }
 
+    //Aqui paso una variable tipo Date a String para luego manejarlo mejor
     private String dateAString(Date d) {
         if (d == null) {
             return null;
@@ -118,6 +126,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         return formatter.format(d);
     }
 
+    //Añado los botones y la label para poner el Id del entrenador y lanzo un evento que limitará los datos que se introducen a solo números
     private void añadirBotonIDEntrenador() {
         JLabel lblId = new javax.swing.JLabel("ID:");
          this.add(lblId, " growx");
@@ -135,7 +144,10 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         });
 
     }
-
+    
+    
+    //añado el boton cargar entrenos que consulatara a la base de datos mediante la clase DataAccess, cargo el arrayList listaTotalEntrenos con los entrenos
+    //segun el id del entrenador introducido
     private void añadirbotonCargarEntrenos() {
         JButton boton = new JButton("Cargar entrenos");
         boton.setBackground(Color.CYAN);
@@ -163,7 +175,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
                             return;
                         }
 
-                            // Recorrer cada usuario y obtener sus entrenamientos
+                            // Recorre cada usuario y obtiene sus entrenamientos
                         for (Usuari usuario : usuariosPorEntrenador) {
 
                             ArrayList<Workout> entrenosUsuario = DataAccess.getWorkoutsPerUser(usuario);
@@ -196,6 +208,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
 
     
 
+    //Añado mes y año en un label
     private void añadirEncabezado() {
         JLabel encabezado = new JLabel(NOMBRES_MESES[mesActual - 1] + " " + añoActual, SwingConstants.CENTER);
         encabezado.setFont(new Font("Arial", Font.BOLD, 16));
@@ -203,6 +216,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         this.add(encabezado, "span 7, center");
     }
 
+    //Añado los ddias de la semana
     private void añadirBotonesSemana() {
         for (String dia : DIAS_SEMANA) {
             JButton boton = new JButton(dia);
@@ -212,6 +226,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         }
     }
 
+    //añado los espacion al inicio segun que mes es
     private void añadirEspaciosInicio() {
         int espacios = diaInicioMes(mesActual, añoActual);
         for (int i = 0; i < espacios; i++) {
@@ -219,6 +234,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         }
     }
 
+    //Año los botones segun los dias tiene el mes, este ha sido el metodo mas dificil.    
     private void añadirDiasDelMes() {
         int diasEnMes = obtenerDiasDelMes(mesActual, añoActual);
 
@@ -237,6 +253,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
             for (Workout w : listaTotalEntrenos) {
                 System.out.println(w.getComments() + " id: " + w.getId() + " y dia vale: " + dia);
 
+                //La fecha la debo formatear pasandola de una formna que se pueda cxomparar con la que recoge de la bbdd
                 String fechaAComparar = generarFecha(dia, mesActual, añoActual);
 
                 System.out.println("Fecha en efu: " + w.getForDate());
@@ -248,6 +265,8 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
                 }
             }
 
+            //El actionperformerd del boton creado por cada dia genera un ArrayList con los entrenos y el ide del dia y el comentaio y lo pasa con el evento lanzado
+            //el evento es personalizado 
             botonDia.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -267,6 +286,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         }
     }
 
+    //esto evita errore en fase de ejecucion si se introduce en el campo id un string, solo acepta numeros
     private void txtIdEntrenadorKeyTyped(java.awt.event.KeyEvent evt) {
         //limito la entrada por teclado a estos caracteres
         char c = evt.getKeyChar();
@@ -275,6 +295,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         }
     }
 
+    //Carga los entrenos del dia como String para luego compararlo
     private ArrayList<String> cargaEntrenosdiaSeleccionado(String fecha) {
 
         ArrayList<String> fechasFiltradas = new ArrayList<>();
@@ -291,6 +312,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         return fechasFiltradas;
     }
 
+    //formatea la fecha para que se pueda comparar , hay que añadir un 0 si el dia es menor de 10 ya que el date te lo devuelve son 0
     public static String generarFecha(int dia, int mesActual, int añoActual) {
         String diaActualconCeroDelante;
 
@@ -305,6 +327,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         return fechaAComparar;
     }
 
+    //es un contador de los entrenos por dia para el tooltip del boton del dia
     private int contadorEntrenosDia(ArrayList<Workout> listaEntrenosUsuarios, String fecha) {
         int coincidencias = 0;
 
@@ -318,6 +341,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         return coincidencias;
     }
 
+    //este calcula que dia de la semana empieza el mes
     private int diaInicioMes(int mes, int año) {
         Calendar calendar = new GregorianCalendar(año, mes - 1, 1);
         int diaSemana = calendar.get(Calendar.DAY_OF_WEEK);
@@ -329,6 +353,7 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 
+    //este metodo cambia el mes actual al cambiar de mes con los arrastres, si es diciembre lo pasa a enero y al reves
     private void cambiarMes(int incremento) {
         mesActual += incremento;
         if (mesActual > 12) {
@@ -348,13 +373,14 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
         refrescarCalendario();
     }
 
+    //devuelkve la lista de usuarios por entrenador
     private ArrayList<Usuari> dameListaUsuariosPorEntrenador(int idEntrenador) {
-        ArrayList<Usuari> listaUsuarios = new ArrayList<>();
-        return listaUsuarios = DataAccess.getAllUsersByInstructor(idEntrenador);
+        return DataAccess.getAllUsersByInstructor(idEntrenador);
     }
 
     int idEntrenador;
 
+    //devuelve los id de usuarios por entrenador
     public void extraerUsuariosPorEntrenador() {
 
         ArrayList<Integer> numeroUsuarioPorEntrenador = new ArrayList<>();
@@ -409,7 +435,8 @@ public class CalendarioEntrenosBeans extends JPanel implements Serializable {
     public void removeRecogerArrayEntrenosListener() {
         this.recogerEntrenos = null;
     }
-
+    
+    //este es el diparador del evento ara pasar al jlist el arraylist con los entrenos por dia
     public void dispararEventoEnviarArrayEntrenosFechasUsuarios(MiEventoDiaSeleccionado e) {
         if (recogerEntrenos != null) { // Verifica si el listener está configurado
 

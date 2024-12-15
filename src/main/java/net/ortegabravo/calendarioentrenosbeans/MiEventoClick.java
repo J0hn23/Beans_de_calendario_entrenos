@@ -8,7 +8,7 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 
 
-
+//Este es el evento que creo para manejar los click del ratón
     public class MiEventoClick extends MouseEvent{
 
     public MiEventoClick(Component source, int id, long when, int modifiers, int x, int y, int xAbs, int yAbs, int clickCount, boolean popupTrigger, int button) {
